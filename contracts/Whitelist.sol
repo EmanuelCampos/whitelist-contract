@@ -24,7 +24,7 @@ contract Whitelist {
     _;
   }
 
-  function addToWhitelist(address _userAddress) onlyOwner external {
+  function addToWhitelist(address _userAddress) internal onlyOwner {
     require(!userWhitelisted[_userAddress], "User already whitelisted");
 
     users.push(_userAddress);
@@ -33,7 +33,7 @@ contract Whitelist {
     emit whitelistUser(_userAddress);
   }
 
-  function checkWhitelist(address _userAddress) public view returns(bool){
+  function checkWhitelist(address _userAddress) internal view returns(bool){
     return userWhitelisted[_userAddress];
   }
 

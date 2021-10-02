@@ -19,12 +19,12 @@ contract Whitelist {
     _;
   }
 
-  modifier isWhitelisted(address _userAddress) {
-    require(userWhitelisted[_userAddress], "You are not in the whitelist");
+  modifier isWhitelisted {
+    require(userWhitelisted[msg.sender], "You are not in the whitelist");
     _;
   }
 
-  function addToWhitelist(address _userAddress) internal onlyOwner {
+  function addToWhitelist(address _userAddress) external onlyOwner {
     require(!userWhitelisted[_userAddress], "User already whitelisted");
 
     users.push(_userAddress);
@@ -33,9 +33,18 @@ contract Whitelist {
     emit whitelistUser(_userAddress);
   }
 
-  function checkWhitelist(address _userAddress) internal view returns(bool){
+  function removeFromWhitelist(address _userAddress) external onlyOwner {
+    require(userWhitelisted[_userAddress], "This user is not whitelisted");
+
+    userWhitelisted[_userAddress] = false;
+
+    return;
+  }
+
+  function checkWhitelist(address _userAddress) external view returns(bool){
     return userWhitelisted[_userAddress];
   }
+
 
 
 }
